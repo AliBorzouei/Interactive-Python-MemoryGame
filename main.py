@@ -64,7 +64,6 @@ delay_time = 1000
 game_over = False
 game_over_time = 0
 
-
 def draw_grid(current_time):
     screen.fill(background_color)
     for r in range(my_rows):
@@ -171,7 +170,6 @@ def draw_grid(current_time):
         rect_msg = msg.get_rect(center=(WIDTH // 2, 50))
         screen.blit(msg, rect_msg)
 
-
 def get_cell(pos):
     x, y = pos
     if y < 100:
@@ -182,14 +180,12 @@ def get_cell(pos):
         return row, col
     return None
 
-
 def check_win():
     for r in range(my_rows):
         for c in range(my_cols):
             if not revealed[r][c]:
                 return False
     return True
-
 
 # Main game loop
 running = True
