@@ -1,0 +1,63 @@
+# .github/workflows/python-ci.yml
+
+# نام Workflow شما
+name: Python CI for Memory Game
+
+# چه زمانی این Workflow باید اجرا شود؟
+# در اینجا، هر زمان که کدی به شاخه‌های main یا master پوش شود
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request: # همچنین برای Pull Request ها هم اجرا شود
+    branches:
+      - main
+      - master
+
+# تعریف Job ها (مراحل)
+jobs:
+  build-and-test: # نام Job
+    runs-on: ubuntu-latest # سیستم عاملی که Workflow روی آن اجرا می‌شود (مثلاً اوبونتو)
+
+    steps:
+      # مرحله اول: دانلود کد از ریپازیتوری
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      # مرحله دوم: تنظیم محیط پایتون
+      - name: Set up Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x' # از جدیدترین نسخه پایتون 3 استفاده کن (مثلاً 3.9, 3.10, 3.11...)
+
+      # مرحله سوم: نصب وابستگی‌ها (اگر پروژه شما فایلی مثل requirements.txt دارد)
+      # اگر پروژه شما وابستگی خارجی ندارد، می‌توانید این مرحله را حذف کنید یا کامنت کنید
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # اگر فایل requirements.txt دارید، آن را اینجا نصب کنید
+          # pip install -r requirements.txt
+          pip install pygame
+          # مثال: pip install pygame (اگر از pygame استفاده کرده‌اید)
+          # برای Memory Game شاید فقط نیاز به tkinter باشه که اون هم معمولا با خود پایتون نصبه.
+          # اگر از کتابخانه خاصی غیر از tkinter استفاده کرده‌اید، آن را اینجا نصب کنید.
+
+      # مرحله چهارم: اجرای تست‌ها (اگر تست‌های خودکار دارید)
+      # اگر تست‌های خودکار ندارید، می‌توانید این مرحله را به صورت ساده نگه دارید یا حذف کنید
+      - name: Run tests (if applicable)
+        run: |
+          echo "No automated tests configured. Manual verification might be needed."
+          # اگر تست‌های پایتون (مثلاً با unittest یا pytest) دارید، دستور آن را اینجا بنویسید:
+          # pytest
+          # python -m unittest discover
+
+      # مرحله پنجم: یک بررسی ساده برای اطمینان از اینکه فایل اصلی قابل اجراست
+      - name: Basic check on main script
+        run: |
+          python main.py --help || python your_main_script_name.py # فرض بر این است که یک فایل اصلی دارید
+          # اگر پروژه شما برای اجرا پارامتری نیاز ندارد، می‌توانید فقط:
+          # python main.py
+          # را بنویسید.
+          # اگر اسم فایل اصلی شما چیز دیگریست، آن را جایگزین کنید (مثلاً memory_game.py)
+          # هدف این است که فقط مطمئن شویم اسکریپت اصلی بدون ارور سینتکسی اولیه اجرا می‌شود.
